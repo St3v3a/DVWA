@@ -62,6 +62,11 @@ if (array_key_exists ("id", $_GET) && array_key_exists ("security", $_GET)) {
 
 	$source = @file_get_contents( DVWA_WEB_PAGE_TO_ROOT . "vulnerabilities/{$id}/source/{$security}.php" );
 	$source = str_replace( array( '$html .=' ), array( 'echo' ), $source );
+	$controllerHtml = '';
+	if ($id === 'javascript') {
+		$controller = @file_get_contents(DVWA_WEB_PAGE_TO_ROOT . 'vulnerabilities/javascript/index.php');
+		$controllerHtml = "<h2>vulnerabilities/javascript/index.php</h2><div id=\"code\">" . highlight_string($controller, true) . "</div>";
+	}
 
 	$js_html = "";
 	if (file_exists (DVWA_WEB_PAGE_TO_ROOT . "vulnerabilities/{$id}/source/{$security}.js")) {
@@ -90,6 +95,7 @@ if (array_key_exists ("id", $_GET) && array_key_exists ("security", $_GET)) {
 				</tr>
 			</table>
 		</div>
+		{$controllerHtml}
 		{$js_html}
 		<br /> <br />
 

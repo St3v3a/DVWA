@@ -26,6 +26,11 @@ if (array_key_exists("id", $_GET)) {
 	$impsrc = @file_get_contents("./{$id}/source/impossible.php");
 	$impsrc = str_replace(array('$html .='), array('echo'), $impsrc);
 	$impsrc = highlight_string($impsrc, true);
+	$controllerHtml = '';
+	if ($id === 'javascript') {
+		$controller = @file_get_contents('./javascript/index.php');
+		$controllerHtml = "<h3>Shared JavaScript challenge controller</h3><div id=\"code\">" . highlight_string($controller, true) . "</div>";
+	}
 
 	switch ($id) {
 		case "javascript":
@@ -109,6 +114,7 @@ if (array_key_exists("id", $_GET)) {
 				<td><div id=\"code\">{$lowsrc}</div></td>
 			</tr>
 		</table>
+		{$controllerHtml}
 		<br /> <br />
 
 		<form>
