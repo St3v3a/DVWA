@@ -26,6 +26,13 @@ if (array_key_exists("id", $_GET)) {
 	$impsrc = @file_get_contents("./{$id}/source/impossible.php");
 	$impsrc = str_replace(array('$html .='), array('echo'), $impsrc);
 	$impsrc = highlight_string($impsrc, true);
+	$rendererHtml = '';
+	if ($id === 'xss_s') {
+		$renderer = new ReflectionFunction('dvwaGuestbook');
+		$lines = file($renderer->getFileName());
+		$rendererSource = implode('', array_slice($lines, $renderer->getStartLine() - 1, $renderer->getEndLine() - $renderer->getStartLine() + 1));
+		$rendererHtml = "<h3>Guestbook output renderer</h3><div id=\"code\">" . highlight_string("<?php\n" . $rendererSource, true) . "</div>";
+	}
 
 	switch ($id) {
 		case "javascript":
@@ -109,6 +116,7 @@ if (array_key_exists("id", $_GET)) {
 				<td><div id=\"code\">{$lowsrc}</div></td>
 			</tr>
 		</table>
+		{$rendererHtml}
 		<br /> <br />
 
 		<form>

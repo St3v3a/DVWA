@@ -14,36 +14,32 @@
 			and will execute the JavaScript. Because it thinks the script came from a trusted source, the malicious script can access any cookies, session tokens, or other
 			sensitive information retained by your browser and used with that site. These scripts can even rewrite the content of the HTML page.</p>
 
-		<p>The XSS is stored in the database. The XSS is permanent, until the database is reset or the payload is manually deleted.</p>
+		<p>Guestbook entries are stored in the database and encoded when displayed, including entries saved before the current protections were applied.</p>
 
 		<br /><hr /><br />
 
 		<h3>Objective</h3>
-		<p>Redirect everyone to a web page of your choosing.</p>
+		<p>Observe how guestbook text can be displayed without being interpreted as HTML.</p>
 
 		<br /><hr /><br />
 
 		<h3>Low Level</h3>
-		<p>Low level will not check the requested input, before including it to be used in the output text.</p>
-		<pre>Spoiler: <span class="spoiler">Either name or message field: &lt;script&gt;alert("XSS");&lt;/script&gt;</span>.</pre>
+		<p>Both the name and message are encoded when the guestbook is rendered.</p>
 
 		<br />
 
 		<h3>Medium Level</h3>
-		<p>The developer had added some protection, however hasn't done every field the same way.</p>
-		<pre>Spoiler: <span class="spoiler">name field: &lt;sCriPt&gt;alert("XSS");&lt;/sCriPt&gt;</span>.</pre>
+		<p>Both stored fields are encoded at display time, even if older entries were saved with different input checks.</p>
 
 		<br />
 
 		<h3>High Level</h3>
-		<p>The developer believe they have disabled all script usage by removing the pattern "&lt;s*c*r*i*p*t".</p>
-		<pre>Spoiler: <span class="spoiler">HTML events</span>.</pre>
+		<p>The display encodes tags and event attributes in both stored fields.</p>
 
 		<br />
 
 		<h3>Impossible Level</h3>
-		<p>Using inbuilt PHP functions (such as "<?php echo dvwaExternalLinkUrlGet( 'https://secure.php.net/manual/en/function.htmlspecialchars.php', 'htmlspecialchars()' ); ?>"),
-			its possible to escape any values which would alter the behaviour of the input.</p>
+		<p>Output encoding also applies here; stored text remains visible without becoming executable markup.</p>
 	</div></td>
 	</tr>
 	</table>
