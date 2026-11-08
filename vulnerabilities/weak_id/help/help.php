@@ -11,19 +11,19 @@
 		<p><hr /></p>
 
 		<h3>Objective</h3>
-		<p>This module uses four different ways to set the dvwaSession cookie value, the objective of each level is to work out how the ID is generated and then infer the IDs of other system users.</p>
+		<p>This module sets a dvwaSession cookie at each level. Compare values across requests and assess whether a previous value reveals the next one.</p>
 
 		<p><hr /></p>
 
 		<h3>Low Level</h3>
-		<p>The cookie value should be very obviously predictable.</p>
+		<p>The cookie value is generated afresh using cryptographic randomness.</p>
 
 		<h3>Medium Level</h3>
-		<p>The value looks a little more random than on low but if you collect a few you should start to see a pattern.</p>
+		<p>Each button click generates an independent random cookie value.</p>
 
 		<h3>High Level</h3>
-		<p>First work out what format the value is in and then try to work out what is being used as the input to generate the values.</p>
-		<p>Extra flags are also being added to the cookie, this does not affect the challenge but highlights extra protections that can be added to protect the cookies.</p>
+		<p>The cookie uses a random value rather than a hash of a predictable counter.</p>
+		<p>It is scoped to this challenge path, is HTTP-only, and uses Secure when served over HTTPS.</p>
 
 
 		<h3>Impossible Level</h3>
