@@ -2,7 +2,14 @@
 
 if( isset( $_POST[ 'Submit' ]  ) ) {
 	// Get input
-	$target = $_REQUEST[ 'ip' ];
+	$target = $_POST[ 'ip' ] ?? null;
+	if (is_string($target)) {
+		$target = trim($target);
+	}
+	if (!is_string($target) || filter_var($target, FILTER_VALIDATE_IP) === false) {
+		$html .= '<pre>ERROR: You have entered an invalid IP.</pre>';
+		return;
+	}
 
 	// Determine OS and execute the ping command.
 	if( stristr( php_uname( 's' ), 'Windows NT' ) ) {
