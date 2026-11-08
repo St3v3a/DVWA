@@ -21,6 +21,7 @@
 
 # Text files where line endings should be preserved
 *.patch -text
+vulnerabilities/open_redirect/source/*.php whitespace=cr-at-eol
 
 #
 # Exclude files from exporting

@@ -1,16 +1,16 @@
 <?php
 
+require_once __DIR__ . '/redirect_target.php';
+
 if (array_key_exists ("redirect", $_GET) && $_GET['redirect'] != "") {
-	if (preg_match ("/http:\/\/|https:\/\//i", $_GET['redirect'])) {
-		http_response_code (500);
-		?>
-		<p>Absolute URLs not allowed.</p>
-		<?php
-		exit;
+	$target = dvwaLocalRedirectTarget($_GET['redirect']);
+	if ($target !== null) {
+		header ("location: " . $target);
 	} else {
-		header ("location: " . $_GET['redirect']);
-		exit;
+		http_response_code(400);
+		echo 'Invalid redirect target.';
 	}
+	exit;
 }
 
 http_response_code (500);
