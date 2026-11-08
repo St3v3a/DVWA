@@ -3,9 +3,10 @@
 header ("X-XSS-Protection: 0");
 
 // Is there any input?
-if( array_key_exists( "name", $_GET ) && $_GET[ 'name' ] != NULL ) {
+if( isset( $_GET[ 'name' ] ) && is_string( $_GET[ 'name' ] ) && $_GET[ 'name' ] !== '' ) {
+	$name = htmlspecialchars( $_GET[ 'name' ], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8' );
 	// Feedback for end user
-	$html .= '<pre>Hello ' . $_GET[ 'name' ] . '</pre>';
+	$html .= '<pre>Hello ' . $name . '</pre>';
 }
 
 ?>

@@ -20,25 +20,22 @@
 		<br /><hr /><br />
 
 		<h3>Objective</h3>
-		<p>One way or another, steal the cookie of a logged in user.</p>
+		<p>Observe how a greeting can display submitted text without interpreting it as HTML.</p>
 
 		<br /><hr /><br />
 
 		<h3>Low Level</h3>
-		<p>Low level will not check the requested input, before including it to be used in the output text.</p>
-		<pre>Spoiler: <span class="spoiler">?name=&lt;script&gt;alert("XSS");&lt;/script&gt;</span>.</pre>
+		<p>The submitted name is encoded before it is included in the greeting.</p>
 
 		<br />
 
 		<h3>Medium Level</h3>
-		<p>The developer has tried to add a simple pattern matching to remove any references to "&lt;script&gt;", to disable any JavaScript.</p>
-		<pre>Spoiler: <span class="spoiler">Its cAse sENSiTiVE</span>.</pre>
+		<p>The greeting encodes the full submitted name, including mixed-case tags.</p>
 
 		<br />
 
 		<h3>High Level</h3>
-		<p>The developer now believes they can disable all JavaScript by removing the pattern "&lt;s*c*r*i*p*t".</p>
-		<pre>Spoiler: <span class="spoiler">HTML events</span>.</pre>
+		<p>The greeting encodes the full submitted name, including HTML event attributes.</p>
 
 		<br />
 
