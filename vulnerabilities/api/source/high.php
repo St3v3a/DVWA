@@ -4,7 +4,7 @@ $message = "";
 
 $html .= "
 	<p>
-		Here is the <a href='openapi.yml'>OpenAPI</a> document, have a look the health functions and see if you can find one that has a vulnerability.
+		Here is the <a href='openapi.yml'>OpenAPI</a> document. Compare connectivity responses for reachable, unreachable and malformed targets.
 	</p>
 	<p>
 		Note, this file assumes you are running DVWA out of the document root, if you have installed it into a subdirectory, such as DVWA, then you will need to update it. Look through the file for the paths, e.g.<br><br>

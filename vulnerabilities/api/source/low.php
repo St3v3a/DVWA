@@ -11,7 +11,7 @@ $stripped_url = str_replace ("/vulnerabilities/api/", "", $request_url);
 
 $html .= "
 <p>
-	Versioning is important in APIs, running multiple versions of an API can allow for backward compatibility and can allow new services to be added without affecting existing users. The downside to keeping old versions alive is when those older versions contain vulnerabilities.
+	Versioning is important in APIs, running multiple versions of an API can allow for backward compatibility. Each version must apply the same rules for public user data.
 </p>
 ";
 
@@ -79,10 +79,6 @@ $html .= "
 		Object.keys(item).forEach(function(k){
 			let cell = row.insert_th_Cell(-1);
 			cell.innerHTML = k;
-			if (k == 'password') {
-				successDiv = document.getElementById ('message');
-				successDiv.style.display = 'block';
-			}
 		});
 
 		const tableBody = document.getElementById('tableBody');
@@ -110,9 +106,8 @@ $html .= "
 
 
 		<p>
-			Look at the call used to create this table and see if you can exploit it to return some additional information.
+			Compare the version one and version two user records. Both expose only public fields.
 		</p>
-		<div class='success' style='display:none' id='message'>Well done, you found the password hashes.</div>
 		<script>
 			get_users();
 		</script>

@@ -85,7 +85,13 @@ class HealthController
 		if (array_key_exists ("target", $input)) {
 			$target = $input['target'];
 
-			exec ("ping -c 4 " . $target, $output, $ret_var);
+			$ret_var = 1;
+			if (is_string($target) && $target !== '' && strlen($target) <= 253 &&
+				(filter_var($target, FILTER_VALIDATE_IP) !== false ||
+					filter_var($target, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME) !== false) &&
+				$target[0] !== '-') {
+				exec("ping -c 4 -- " . escapeshellarg($target), $output, $ret_var);
+			}
 
 			if ($ret_var == 0) {
 				$response['status_code_header'] = 'HTTP/1.1 200 OK';

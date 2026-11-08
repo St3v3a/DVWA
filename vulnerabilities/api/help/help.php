@@ -24,7 +24,7 @@
 		<br /><hr /><br />
 
 		<h3>Objective</h3>
-		<p>Each level has its own objective but the general idea is to exploit weak API implementations.</p>
+		<p>Inspect API versioning, permitted user updates, and safe connectivity inputs.</p>
 
 		<br /><hr /><br />
 
@@ -39,7 +39,7 @@
 			As the call is being made against version two (<code>v2</code>) of the endpoint, the obvious thing to try is to see if version one is available, and what it offers. The easiest way to do this is to access it directly in the browser by visiting <a href="//<?=$_SERVER['SERVER_NAME']?>/vulnerabilities/api/v1/user/">/vulnerabilities/api/v1/user/</a>, but sometimes API calls require extra headers or authentication tokens which it is easier to let the site add rather than trying to do it manually. Two ways to do this are to modify the URL used in the JavaScript as the page loads by setting a breakpoint on it and changing it before the request is made, or to intercept the call in a proxy, such as BurpSuite.
 		</p>
 		<p>
-			Whatever approach you try, by accessing version one of the endpoint, you should be able to see the password hashes as part of the data.
+			Version one remains available, but it now exposes only the same public user fields as version two.
 		</p>
 		</div>
 
@@ -110,7 +110,7 @@
 }</code></pre>
 
 		<p>
-			And hopefully a congratulations message.
+			The update changes the name; the server keeps the user's existing level.
 		</p>
 		</div>
 
@@ -122,7 +122,7 @@
 		</p>
 
 		<div id="high_answer">
-		<p>The connectivity call takes a target parameter and pings it to check for a connection, this is done by calling the OS ping command and is vulnerable to command injection.</p>
+		<p>The connectivity call accepts a hostname or IP address as one argument. Shell syntax is rejected before the ping command runs.</p>
 		<p>
 		For more information on how to exploit this type of issue, see the command injection module.
 		</p>
