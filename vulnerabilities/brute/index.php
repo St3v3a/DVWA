@@ -12,21 +12,16 @@ $page[ 'help_button' ]   = 'brute';
 $page[ 'source_button' ] = 'brute';
 dvwaDatabaseConnect();
 
-$method            = 'GET';
-$vulnerabilityFile = '';
+// All levels use the protected POST credential check.
+$method = 'POST';
 switch( dvwaSecurityLevelGet() ) {
 	case 'low':
-		$vulnerabilityFile = 'low.php';
-		break;
 	case 'medium':
-		$vulnerabilityFile = 'medium.php';
-		break;
 	case 'high':
-		$vulnerabilityFile = 'high.php';
+		$vulnerabilityFile = dvwaSecurityLevelGet() . '.php';
 		break;
 	default:
 		$vulnerabilityFile = 'impossible.php';
-		$method = 'POST';
 		break;
 }
 
@@ -47,8 +42,7 @@ $page[ 'body' ] .= "
 			<br />
 			<input type=\"submit\" value=\"Login\" name=\"Login\">\n";
 
-if( $vulnerabilityFile == 'high.php' || $vulnerabilityFile == 'impossible.php' )
-	$page[ 'body' ] .= "			" . tokenField();
+$page[ 'body' ] .= "			" . tokenField();
 
 $page[ 'body' ] .= "
 		</form>
