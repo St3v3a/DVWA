@@ -18,27 +18,22 @@
 		<br /><hr /><br />
 
 		<h3>Objective</h3>
-		<p>Your task is to make the current user change their own password, without them knowing about their actions, using a CSRF attack.</p>
+		<p>Change your own password through the form and inspect how the server validates the request.</p>
 
 		<br /><hr /><br />
 
 		<h3>Low Level</h3>
-		<p>There are no measures in place to protect against this attack. This means a link can be crafted to achieve a certain action (in this case, change the current users password).
-			Then with some basic social engineering, have the target click the link (or just visit a certain page), to trigger the action.</p>
-		<pre>Spoiler: <span class="spoiler">?password_new=password&password_conf=password&Change=Change</span>.</pre>
+		<p>Password changes require a POST containing the form's session token. A link with query parameters cannot change the password.</p>
 
 		<br />
 
 		<h3>Medium Level</h3>
-		<p>For the medium level challenge, there is a check to see where the last requested page came from. The developer believes if it matches the current domain,
-			it must of come from the web application so it can be trusted.</p>
-		<p>It may be required to link in multiple vulnerabilities to exploit this vector, such as reflective XSS.</p>
+		<p>A Referer header is not treated as proof of authorization. The POST token is checked before a password update.</p>
 
 		<br />
 
 		<h3>High Level</h3>
-		<p>In the high level, the developer has added an "anti Cross-Site Request Forgery (CSRF) token". In order by bypass this protection method, another vulnerability will be required.</p>
-		<pre>Spoiler: <span class="spoiler">e.g. Javascript is a executed on the client side, in the browser</span>.</pre>
+		<p>The anti-CSRF token is required on POST, and GET requests cannot change the password.</p>
 
 		<h4>Bonus Challenge</h4>
 		<p>At this level, the site will also accept a change password request as a JSON object in the following format:</p>
@@ -58,7 +53,7 @@ user-token: 026d0caed93471b507ed460ebddbd096
 		<br />
 
 		<h3>Impossible Level</h3>
-		<p>At this level, the site requires the user to give their current password as well as the new password. As the attacker does not know this, the site is protected against CSRF style attacks.</p>
+		<p>The form also requires the current password, in addition to a POST and a valid session token.</p>
 	</div></td>
 	</tr>
 	</table>

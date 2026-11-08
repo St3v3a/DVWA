@@ -62,6 +62,13 @@ if (array_key_exists ("id", $_GET) && array_key_exists ("security", $_GET)) {
 
 	$source = @file_get_contents( DVWA_WEB_PAGE_TO_ROOT . "vulnerabilities/{$id}/source/{$security}.php" );
 	$source = str_replace( array( '$html .=' ), array( 'echo' ), $source );
+	$helperHtml = '';
+	if ($id === 'csrf') {
+		$helper = @file_get_contents(DVWA_WEB_PAGE_TO_ROOT . 'vulnerabilities/csrf/source/csrf_token.php');
+		if ($helper !== false) {
+			$helperHtml = "<h2>vulnerabilities/csrf/source/csrf_token.php</h2><div id=\"code\">" . highlight_string($helper, true) . "</div>";
+		}
+	}
 
 	$js_html = "";
 	if (file_exists (DVWA_WEB_PAGE_TO_ROOT . "vulnerabilities/{$id}/source/{$security}.js")) {
@@ -90,6 +97,7 @@ if (array_key_exists ("id", $_GET) && array_key_exists ("security", $_GET)) {
 				</tr>
 			</table>
 		</div>
+		{$helperHtml}
 		{$js_html}
 		<br /> <br />
 

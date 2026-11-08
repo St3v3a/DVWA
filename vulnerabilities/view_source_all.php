@@ -26,6 +26,13 @@ if (array_key_exists("id", $_GET)) {
 	$impsrc = @file_get_contents("./{$id}/source/impossible.php");
 	$impsrc = str_replace(array('$html .='), array('echo'), $impsrc);
 	$impsrc = highlight_string($impsrc, true);
+	$helperHtml = '';
+	if ($id === 'csrf') {
+		$helper = @file_get_contents('./csrf/source/csrf_token.php');
+		if ($helper !== false) {
+			$helperHtml = "<h3>Shared CSRF token checks</h3><div id=\"code\">" . highlight_string($helper, true) . "</div>";
+		}
+	}
 
 	switch ($id) {
 		case "javascript":
@@ -109,6 +116,7 @@ if (array_key_exists("id", $_GET)) {
 				<td><div id=\"code\">{$lowsrc}</div></td>
 			</tr>
 		</table>
+		{$helperHtml}
 		<br /> <br />
 
 		<form>

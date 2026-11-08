@@ -1,9 +1,13 @@
 <?php
 
-if( isset( $_GET[ 'Change' ] ) ) {
+if( isset( $_POST[ 'Change' ] ) ) {
+	if (!dvwaCsrfConsumePasswordToken($_POST['user_token'] ?? null)) {
+		$html .= "<pre>Invalid CSRF token.</pre>";
+		return;
+	}
 	// Get input
-	$pass_new  = $_GET[ 'password_new' ];
-	$pass_conf = $_GET[ 'password_conf' ];
+	$pass_new  = $_POST[ 'password_new' ];
+	$pass_conf = $_POST[ 'password_conf' ];
 
 	// Do the passwords match?
 	if( $pass_new == $pass_conf ) {
