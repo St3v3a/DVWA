@@ -29,6 +29,9 @@ switch( dvwaSecurityLevelGet() ) {
 		break;
 }
 
+if ($vulnerabilityFile !== 'impossible.php') {
+	require_once DVWA_WEB_PAGE_TO_ROOT . 'vulnerabilities/upload/source/image_upload.php';
+}
 require_once DVWA_WEB_PAGE_TO_ROOT . "vulnerabilities/upload/source/{$vulnerabilityFile}";
 
 // Check if folder is writeable

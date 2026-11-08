@@ -15,32 +15,27 @@
 		<br /><hr /><br />
 
 		<h3>Objective</h3>
-		<p>Execute any PHP function of your choosing on the target system (such as <?php echo dvwaExternalLinkUrlGet( 'https://secure.php.net/manual/en/function.phpinfo.php', 'phpinfo()' ); ?>
-			or <?php echo dvwaExternalLinkUrlGet( 'https://secure.php.net/manual/en/function.system.php', 'system()' ); ?>) thanks to this file upload vulnerability.</p>
+		<p>Upload a JPEG or PNG image and inspect how the server stores and serves the encoded result.</p>
 
 		<br /><hr /><br />
 
 		<h3>Low Level</h3>
-		<p>Low level will not check the contents of the file being uploaded in any way. It relies only on trust.</p>
-		<pre>Spoiler: <span class="spoiler">Upload any valid PHP file with command in it</span>.</pre>
+		<p>The server checks the actual image format and saves a newly encoded image under a generated name.</p>
 
 		<br />
 
 		<h3>Medium Level</h3>
-		<p>When using the medium level, it will check the reported file type from the client when its being uploaded.</p>
-		<pre>Spoiler: <span class="spoiler">Worth looking for any restrictions within any "hidden" form fields</span>.</pre>
+		<p>The upload is validated from its decoded image content rather than the file type reported by the client.</p>
 
 		<br />
 
 		<h3>High Level</h3>
-		<p>Once the file has been received from the client, the server will try to resize any image that was included in the request.</p>
-		<pre>Spoiler: <span class="spoiler">need to link in another vulnerability, such as file inclusion</span>.</pre>
+		<p>The stored image is re-encoded so the original uploaded bytes are not served.</p>
 
 		<br />
 
 		<h3>Impossible Level</h3>
-		<p>This will check everything from all the levels so far, as well then to re-encode the image. This will make a new image, therefore stripping
-			any "non-image" code (including metadata).</p>
+		<p>This level adds an anti-CSRF token and re-encodes accepted images to strip non-image bytes and metadata.</p>
 	</div></td>
 	</tr>
 	</table>
