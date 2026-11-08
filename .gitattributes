@@ -21,6 +21,8 @@
 
 # Text files where line endings should be preserved
 *.patch -text
+vulnerabilities/sqli/source/*.php whitespace=cr-at-eol
+vulnerabilities/view_source*.php whitespace=cr-at-eol
 
 #
 # Exclude files from exporting

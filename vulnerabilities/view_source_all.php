@@ -26,6 +26,13 @@ if (array_key_exists("id", $_GET)) {
 	$impsrc = @file_get_contents("./{$id}/source/impossible.php");
 	$impsrc = str_replace(array('$html .='), array('echo'), $impsrc);
 	$impsrc = highlight_string($impsrc, true);
+	$helperHtml = '';
+	if ($id === 'sqli') {
+		$helper = @file_get_contents(DVWA_WEB_PAGE_TO_ROOT . 'vulnerabilities/sqli/source/user_lookup.php');
+		if ($helper !== false) {
+			$helperHtml = "<h3>Shared SQL Injection Lookup</h3><div id=\"code\">" . highlight_string($helper, true) . "</div>";
+		}
+	}
 
 	switch ($id) {
 		case "javascript":
@@ -110,6 +117,7 @@ if (array_key_exists("id", $_GET)) {
 			</tr>
 		</table>
 		<br /> <br />
+		{$helperHtml}
 
 		<form>
 			<input type=\"button\" value=\"<-- Back\" onclick=\"history.go(-1);return true;\">
