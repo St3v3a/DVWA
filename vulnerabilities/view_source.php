@@ -41,6 +41,9 @@ if (array_key_exists ("id", $_GET) && array_key_exists ("security", $_GET)) {
 		case "xss_s" :
 			$vuln = 'Stored XSS';
 			break;
+		case "xss_d" :
+			$vuln = 'DOM XSS';
+			break;
 		case "weak_id" :
 			$vuln = 'Weak Session IDs';
 			break;
@@ -62,6 +65,11 @@ if (array_key_exists ("id", $_GET) && array_key_exists ("security", $_GET)) {
 
 	$source = @file_get_contents( DVWA_WEB_PAGE_TO_ROOT . "vulnerabilities/{$id}/source/{$security}.php" );
 	$source = str_replace( array( '$html .=' ), array( 'echo' ), $source );
+	$controllerHtml = '';
+	if ($id === 'xss_d') {
+		$controller = @file_get_contents(DVWA_WEB_PAGE_TO_ROOT . 'vulnerabilities/xss_d/index.php');
+		$controllerHtml = "<h2>vulnerabilities/xss_d/index.php</h2><div id=\"code\">" . highlight_string($controller, true) . "</div>";
+	}
 
 	$js_html = "";
 	if (file_exists (DVWA_WEB_PAGE_TO_ROOT . "vulnerabilities/{$id}/source/{$security}.js")) {
@@ -90,6 +98,7 @@ if (array_key_exists ("id", $_GET) && array_key_exists ("security", $_GET)) {
 				</tr>
 			</table>
 		</div>
+		{$controllerHtml}
 		{$js_html}
 		<br /> <br />
 

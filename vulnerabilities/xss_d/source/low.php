@@ -1,5 +1,5 @@
 <?php
 
-# No protections, anything goes
+# The shared language selector in index.php handles URL input safely.
 
 ?>

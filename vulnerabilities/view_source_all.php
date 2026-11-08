@@ -26,6 +26,11 @@ if (array_key_exists("id", $_GET)) {
 	$impsrc = @file_get_contents("./{$id}/source/impossible.php");
 	$impsrc = str_replace(array('$html .='), array('echo'), $impsrc);
 	$impsrc = highlight_string($impsrc, true);
+	$controllerHtml = '';
+	if ($id === 'xss_d') {
+		$controller = @file_get_contents('./xss_d/index.php');
+		$controllerHtml = "<h3>Shared DOM XSS controller</h3><div id=\"code\">" . highlight_string($controller, true) . "</div>";
+	}
 
 	switch ($id) {
 		case "javascript":
@@ -57,6 +62,9 @@ if (array_key_exists("id", $_GET)) {
 			break;
 		case "xss_s":
 			$vuln = 'Stored XSS';
+			break;
+		case "xss_d":
+			$vuln = 'DOM XSS';
 			break;
 		case "weak_id":
 			$vuln = 'Weak Session IDs';
@@ -109,6 +117,7 @@ if (array_key_exists("id", $_GET)) {
 				<td><div id=\"code\">{$lowsrc}</div></td>
 			</tr>
 		</table>
+		{$controllerHtml}
 		<br /> <br />
 
 		<form>
