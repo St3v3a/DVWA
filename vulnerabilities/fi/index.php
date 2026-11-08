@@ -29,12 +29,22 @@ switch( dvwaSecurityLevelGet() ) {
 		break;
 }
 
-require_once DVWA_WEB_PAGE_TO_ROOT . "vulnerabilities/fi/source/{$vulnerabilityFile}";
+if (!isset($_GET['page'])) {
+	header( 'Location:?page=include.php' );
+	exit;
+}
 
-// if( count( $_GET ) )
-if( isset( $file ) )
-	include( $file );
-else {
+$invalidPage = !is_string($_GET['page']);
+if (!$invalidPage) {
+	require_once DVWA_WEB_PAGE_TO_ROOT . "vulnerabilities/fi/source/{$vulnerabilityFile}";
+}
+
+$allowedFiles = array('include.php', 'file1.php', 'file2.php', 'file3.php');
+if ($invalidPage || (isset($file) && !in_array($file, $allowedFiles, true))) {
+	$page['body'] .= '<p>ERROR: File not found!</p>';
+} elseif (isset($file)) {
+	include(__DIR__ . '/' . $file);
+} else {
 	header( 'Location:?page=include.php' );
 	exit;
 }
