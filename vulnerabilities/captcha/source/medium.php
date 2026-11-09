@@ -1,6 +1,7 @@
 <?php
 
 if( isset( $_POST[ 'Change' ] ) && ( $_POST[ 'step' ] == '1' ) ) {
+	unset( $_SESSION[ 'captcha_password_change' ] );
 	// Hide the CAPTCHA form
 	$hide_form = true;
 
@@ -9,9 +10,10 @@ if( isset( $_POST[ 'Change' ] ) && ( $_POST[ 'step' ] == '1' ) ) {
 	$pass_conf = $_POST[ 'password_conf' ];
 
 	// Check CAPTCHA from 3rd party
-	$resp = recaptcha_check_answer(
+	$captchaResponse = $_POST['g-recaptcha-response'] ?? '';
+	$resp = $captchaResponse !== '' && recaptcha_check_answer(
 		$_DVWA[ 'recaptcha_private_key' ],
-		$_POST['g-recaptcha-response']
+		$captchaResponse
 	);
 
 	// Did the CAPTCHA fail?
@@ -24,6 +26,7 @@ if( isset( $_POST[ 'Change' ] ) && ( $_POST[ 'step' ] == '1' ) ) {
 	else {
 		// CAPTCHA was correct. Do both new passwords match?
 		if( $pass_new == $pass_conf ) {
+			dvwaCaptchaBeginChange( dvwaCurrentUser(), dvwaSecurityLevelGet(), $pass_new );
 			// Show next stage for the user
 			$html .= "
 				<pre><br />You passed the CAPTCHA! Click the button to confirm your changes.<br /></pre>
@@ -31,7 +34,6 @@ if( isset( $_POST[ 'Change' ] ) && ( $_POST[ 'step' ] == '1' ) ) {
 					<input type=\"hidden\" name=\"step\" value=\"2\" />
 					<input type=\"hidden\" name=\"password_new\" value=\"{$pass_new}\" />
 					<input type=\"hidden\" name=\"password_conf\" value=\"{$pass_conf}\" />
-					<input type=\"hidden\" name=\"passed_captcha\" value=\"true\" />
 					<input type=\"submit\" name=\"Change\" value=\"Change\" />
 				</form>";
 		}
@@ -51,8 +53,8 @@ if( isset( $_POST[ 'Change' ] ) && ( $_POST[ 'step' ] == '2' ) ) {
 	$pass_new  = $_POST[ 'password_new' ];
 	$pass_conf = $_POST[ 'password_conf' ];
 
-	// Check to see if they did stage 1
-	if( !$_POST[ 'passed_captcha' ] ) {
+	// Check the server-side result of stage 1 rather than the hidden field.
+	if( !dvwaCaptchaConsumeChange( dvwaCurrentUser(), dvwaSecurityLevelGet(), $pass_new ) ) {
 		$html     .= "<pre><br />You have not passed the CAPTCHA.</pre>";
 		$hide_form = false;
 		return;

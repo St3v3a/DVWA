@@ -31,12 +31,15 @@ switch( dvwaSecurityLevelGet() ) {
 }
 
 $hide_form = false;
-require_once DVWA_WEB_PAGE_TO_ROOT . "vulnerabilities/captcha/source/{$vulnerabilityFile}";
-
-// Check if we have a reCAPTCHA key
 $WarningHtml = '';
-if( $_DVWA[ 'recaptcha_public_key' ] == "" ) {
-	$WarningHtml = "<div class=\"warning\"><em>reCAPTCHA API key missing</em> from config file: " . realpath( getcwd() . DIRECTORY_SEPARATOR . DVWA_WEB_PAGE_TO_ROOT . "config" . DIRECTORY_SEPARATOR . "config.inc.php" ) . "</div>";
+$captchaConfigured = trim( $_DVWA[ 'recaptcha_public_key' ] ) !== ''
+	&& trim( $_DVWA[ 'recaptcha_private_key' ] ) !== '';
+if( $captchaConfigured ) {
+	require_once DVWA_WEB_PAGE_TO_ROOT . "vulnerabilities/captcha/source/verifiedChange.php";
+	require_once DVWA_WEB_PAGE_TO_ROOT . "vulnerabilities/captcha/source/{$vulnerabilityFile}";
+}
+else {
+	$WarningHtml = "<div class=\"warning\"><em>reCAPTCHA API keys missing</em> from config file: " . realpath( getcwd() . DIRECTORY_SEPARATOR . DVWA_WEB_PAGE_TO_ROOT . "config" . DIRECTORY_SEPARATOR . "config.inc.php" ) . "</div>";
 	$html = "<em>Please register for a key</em> from reCAPTCHA: " . dvwaExternalLinkUrlGet( 'https://www.google.com/recaptcha/admin/create' );
 	$hide_form = true;
 }
@@ -71,8 +74,6 @@ $page[ 'body' ] .= "			New password:<br />
 			<input type=\"password\" AUTOCOMPLETE=\"off\" name=\"password_conf\"><br />
 
 			" . recaptcha_get_html( $_DVWA[ 'recaptcha_public_key' ] );
-if( $vulnerabilityFile == 'high.php' )
-	$page[ 'body' ] .= "\n\n			<!-- **DEV NOTE**   Response: 'hidd3n_valu3'   &&   User-Agent: 'reCAPTCHA'   **/DEV NOTE** -->\n";
 
 if( $vulnerabilityFile == 'high.php' || $vulnerabilityFile == 'impossible.php' )
 	$page[ 'body' ] .= "\n			" . tokenField();
