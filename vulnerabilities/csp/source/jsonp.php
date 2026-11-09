@@ -1,13 +1,16 @@
 <?php
 header("Content-Type: application/json; charset=UTF-8");
 
-if (array_key_exists ("callback", $_GET)) {
-	$callback = $_GET['callback'];
-} else {
+if (!isset($_GET['callback'])) {
 	return "";
+}
+
+if ($_GET['callback'] !== 'solveSum') {
+	http_response_code(400);
+	exit;
 }
 
 $outp = array ("answer" => "15");
 
-echo $callback . "(".json_encode($outp).")";
+echo "solveSum(" . json_encode($outp) . ")";
 ?>
