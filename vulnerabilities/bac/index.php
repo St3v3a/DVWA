@@ -99,6 +99,7 @@ switch ($securityLevel) {
 }
 
 require_once DVWA_WEB_PAGE_TO_ROOT . "vulnerabilities/bac/source/{$vulnerabilityFile}";
+$profileDefaultId = isset($current_user_id) && $current_user_id > 0 ? intval($current_user_id) : 1;
 
 // Add CSS for logs
 $page['body'] .= "
@@ -147,7 +148,7 @@ $page['body'] .= "
         <form action=\"#\" method=\"GET\">
             <p>
                 View user profile by ID: 
-                <input type=\"text\" name=\"user_id\" value=\"1\">
+                <input type=\"text\" name=\"user_id\" value=\"{$profileDefaultId}\">
                 <input type=\"submit\" value=\"View Profile\" name=\"action\">
             </p>
         </form>
