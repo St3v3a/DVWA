@@ -37,8 +37,17 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 		}
 		if (array_key_exists ('password', $_POST)) {
 			$password = $_POST['password'];
-			$decoded = xor_this (base64_decode ($password), $key);
-			if ($password == "Olifant") {
+			if (!is_string($password)) {
+				throw new Exception("Invalid password");
+			}
+			$account = dvwaCurrentUser();
+			if ($account === 'Unknown' && !empty($_DVWA['disable_authentication'])) {
+				$account = 'admin';
+			}
+			$statement = $db->prepare('SELECT password FROM users WHERE user = :user LIMIT 1');
+			$statement->execute(array(':user' => $account));
+			$storedHash = $statement->fetchColumn();
+			if (is_string($storedHash) && hash_equals($storedHash, md5($password))) {
 				$success = "Welcome back user";
 			} else {
 				$errors = "Login Failed";
@@ -51,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 $html = "
 		<p>
-		This super secure system will allow you to exchange messages with your friends without anyone else being able to read them. Use the box below to encode and decode messages.
+		This legacy XOR tool encodes and decodes demonstration messages. The login form below checks your current account password independently of those messages.
 		</p>
 		<form name=\"xor\" method='post' action=\"" . $_SERVER['PHP_SELF'] . "\">
 			<p>
@@ -79,7 +88,7 @@ if (!is_null ($encoded)) {
 $html .= "
 		<hr>
 		<p>
-		You have intercepted the following message, decode it and log in below.
+		You have intercepted the following message. It is not an account credential.
 		</p>
 		<p>
 		<textarea readonly='readonly' style='width: 600px; height: 28px' id='encoded' name='encoded'>Lg4WGlQZChhSFBYSEB8bBQtPGxdNQSwEHREOAQY=</textarea>

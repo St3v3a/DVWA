@@ -52,7 +52,7 @@ $html = "
 			<textarea style='width: 600px; height: 23px'>" . htmlentities ($token_data) . "</textarea>
 		</p>
 		<p>
-			You can use the form below to provide the token to access the system. You have two challenges, first, decrypt the token to find out the secret it contains, and then create a new token to access the system as a other users. See if you can make yourself an administrator.
+			Use the form below to check the issued token. The token is tied to this session, and changes to its contents should be rejected.
 		</p>
 		<hr>
 		<form name=\"check_token\" action=\"\">

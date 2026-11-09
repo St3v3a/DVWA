@@ -8,6 +8,7 @@
 
 <div class="body_padded">
 	<h1>Help - Cryptographic Problems</h1>
+	<p>The exploit walkthroughs below describe the original vulnerable exercise. This event patch protects the login and token checks, so those old attacks no longer succeed.</p>
 
 	<div id="code">
 	<table width='100%' bgcolor='white' style="border:2px #C0C0C0 solid">
